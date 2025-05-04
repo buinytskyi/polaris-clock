@@ -1,0 +1,9 @@
+pygame-ce
+pytz==2025.1
+timezonefinder==5.2.0
+cffi==1.17.1
+numpy
+pycparser==2.22
+python-dateutil==2.9.0.post0
+six==1.17.0
+astropy
