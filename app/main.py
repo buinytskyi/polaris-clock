@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from timezonefinder import TimezoneFinder
 import pytz
 import pygame
@@ -21,18 +21,14 @@ class PolarisClock:
             self.lat = float(db.lat)
 
         global lon_center, lat_center, center_x, center_y, radius, geojson_data, country_border_data, width, height
+        pygame.init()
         width = 800
         height = 800
         center_x = width // 2
         center_y = height // 2
-        self.tz = pytz.timezone(tz)
-
+        self.tz = pytz.timezone(str(tz))
         self.radius = 400
-
         self.lst_angle = self.get_lst_angle(self.lon)
-
-        self.tz = pytz.timezone(str(self.tz))
-        pygame.init()
         self.screen = pygame.display.set_mode((width, height), pygame.SCALED | pygame.FULLSCREEN )
         self.clock = pygame.time.Clock()
         self.running = False
@@ -52,10 +48,19 @@ class PolarisClock:
     def get_cr(self):
         return datetime.now(self.tz).strftime('%H:%M')
 
-    def get_sidereal_time_adj(self):
+    def check_dst(self):
+        aware_dt = self.tz.localize(datetime.now(), is_dst=None)
+        dst_offset = aware_dt.tzinfo.dst(aware_dt)
+        return dst_offset != timedelta(0)
+
+    def circular_time_adj(self):
         days_diff = (datetime.now() - datetime(datetime.now().year, 3, 6)).days
         minutes_per_day = days_diff * 3.56
         sidereal_time_angle = minutes_per_day * 0.25
+        # Add daylight saving time if required
+        if self.check_dst() is True:
+            sidereal_time_angle -= 15
+
         return sidereal_time_angle
 
     def convert_angle_to_time(self, lst_angle):
@@ -115,7 +120,7 @@ class PolarisClock:
         self.scanline_manager.update()
         self.scanline_manager.draw()
         self.circular.draw_border()
-        self.circular.draw_hour_ticks(self.get_sidereal_time_adj())
+        self.circular.draw_hour_ticks(self.circular_time_adj())
         self.circular.draw_clock_hand(self.get_dubhe_lha_angle(self.get_lst_angle(self.lon)))
         pygame.display.flip()
 
