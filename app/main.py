@@ -169,7 +169,6 @@ class PolarisClock:
                             lat_center = max(5, min(lat_center, 75))
 
                         prev_mouse_pos = current_mouse_pos
-            print("lon=", lon_center, "lat=", lat_center)
             self.lon = lon_center
             self.lat = lat_center
             self.screen_main()
