@@ -161,16 +161,15 @@ class PolarisClock:
                             dx = prev_mouse_pos[0] - current_mouse_pos[0]
                             dy = prev_mouse_pos[1] - current_mouse_pos[1]
 
-                            if dx > 0:
-                                lon_center += 0.5  # Move right
-                            elif dx < 0:
-                                lon_center -= 0.5  # Move left
+                            if -180 <= lon_center <= 180:
+                                lon_center += 0.5 if dx > 0 else -0.5 if dx < 0 else 0
+                            lon_center = max(-180, min(lon_center, 180))
+                            if 5 <= lat_center <= 75:
+                                lat_center += 0.5 if dy < 0 else -0.5 if dy > 0 else 0
+                            lat_center = max(5, min(lat_center, 75))
 
-                            if dy > 0:
-                                lat_center = max(lat_center - 0.5, -90)  # Move down
-                            elif dy < 0:
-                                lat_center = min(lat_center + 0.5, 90)  # Move up
                         prev_mouse_pos = current_mouse_pos
+            print("lon=", lon_center, "lat=", lat_center)
             self.lon = lon_center
             self.lat = lat_center
             self.screen_main()
