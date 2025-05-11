@@ -7,8 +7,8 @@ class Text:
         self.font = font
         self.color = color
 
-    def draw(self, text, pos, value):
-        full_text = f"{text} {value}"
+    def draw(self, pos, value):
+        full_text = f"{value}"
         text_surface = self.font.render(full_text, True, self.color)
         self.screen.blit(text_surface, pos)
 
