@@ -4,11 +4,11 @@ import os
 class Text:
     def __init__(self, screen, color):
         self.screen = screen
-        self.font = pygame.font.Font(None, 62)
         self.color = color
 
-    def draw(self, pos, value):
+    def draw(self, pos, font_size, value):
         full_text = f"{value}"
+        self.font = pygame.font.Font(None, int(font_size))
         text_surface = self.font.render(full_text, True, self.color)
         self.screen.blit(text_surface, pos)
 
