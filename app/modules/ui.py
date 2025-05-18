@@ -2,9 +2,9 @@ import pygame
 import os
 
 class Text:
-    def __init__(self, screen, font, color):
+    def __init__(self, screen, color):
         self.screen = screen
-        self.font = font
+        self.font = pygame.font.Font(None, 62)
         self.color = color
 
     def draw(self, pos, value):
@@ -13,14 +13,14 @@ class Text:
         self.screen.blit(text_surface, pos)
 
 class Circular:
-    def __init__(self, screen, center, radius, color, color2, color4, font):
+    def __init__(self, screen, center, radius, color, color2, color4):
         self.screen = screen
         self.center = center
         self.radius = radius
         self.color = color
         self.color2 = color2
         self.color4 = color4
-        self.font = font
+        self.font = pygame.font.Font(None, 32)
 
     def draw_hour_ticks(self, get_sn_angle):
         for hour in range(24):

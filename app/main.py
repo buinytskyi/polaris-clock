@@ -32,7 +32,6 @@ class PolarisClock:
         self.screen = pygame.display.set_mode((width, height), pygame.SCALED | pygame.FULLSCREEN )
         self.clock = pygame.time.Clock()
         self.running = False
-        self.font = pygame.font.Font(None, 62)
         self.color = pygame.Color('blue')
         self.color2 = pygame.Color('blue')
         self.color3 = pygame.Color('blue')
@@ -42,8 +41,8 @@ class PolarisClock:
         #Class init
         self.scanline_manager = Scanline(self.screen, width, height, speed=10)
         self.globemap = Globemap()
-        self.circular = Circular( self.screen, self.center, self.radius, self.color, self.color2, self.color4, self.font )
-        self.text = Text(self.screen, self.font, self.color4)
+        self.circular = Circular( self.screen, self.center, self.radius, self.color, self.color2, self.color4 )
+        self.text = Text(self.screen, self.color4)
 
     def get_cr(self):
         return datetime.now(self.tz).strftime('%H:%M')
@@ -111,7 +110,6 @@ class PolarisClock:
         return lst_angle
 
     def screen_main(self):
-        angle=float('30')
         self.screen.fill((0, 0, 0))
         self.globemap.draw_geojson_coastlines(self.lon, self.lat, self.color3)
         self.globemap.draw_geojson_country_borders(self.lon, self.lat, self.color3)
